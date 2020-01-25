@@ -1,0 +1,94 @@
+{
+  "location": {
+      "value": "westeurope"
+  },
+  "networkInterfaceName": {
+      "value": "linux-01-vm640"
+  },
+  "networkSecurityGroupName": {
+      "value": "linux-01-vm-nsg"
+  },
+  "networkSecurityGroupRules": {
+      "value": [
+          {
+              "name": "SSH",
+              "properties": {
+                  "priority": 300,
+                  "protocol": "TCP",
+                  "access": "Allow",
+                  "direction": "Inbound",
+                  "sourceAddressPrefix": "*",
+                  "sourcePortRange": "*",
+                  "destinationAddressPrefix": "*",
+                  "destinationPortRange": "22"
+              }
+          }
+      ]
+  },
+  "subnetName": {
+      "value": "default"
+  },
+  "virtualNetworkName": {
+      "value": "exam-prep-rg-vnet"
+  },
+  "addressPrefixes": {
+      "value": [
+          "10.0.0.0/24"
+      ]
+  },
+  "subnets": {
+      "value": [
+          {
+              "name": "default",
+              "properties": {
+                  "addressPrefix": "10.0.0.0/24"
+              }
+          }
+      ]
+  },
+  "publicIpAddressName": {
+      "value": "linux-01-vm-ip"
+  },
+  "publicIpAddressType": {
+      "value": "Dynamic"
+  },
+  "publicIpAddressSku": {
+      "value": "Basic"
+  },
+  "virtualMachineName": {
+      "value": "linux-01-vm"
+  },
+  "virtualMachineRG": {
+      "value": "exam-prep-rg"
+  },
+  "osDiskType": {
+      "value": "Premium_LRS"
+  },
+  "virtualMachineSize": {
+      "value": "Standard_B2ms"
+  },
+  "adminUsername": {
+      "value": "ronald"
+  },
+  "adminPublicKey": {
+      "value": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDn+JUp3bgPSP0/67Eu5iYouCRbD9D8DHXNCFdzf2ExcILLrCrgzsXE7M2OSdPaF5z6uu/hPL9DfNkE3oxHfKLVh+AFuHJA8ugqav3PiIXThwgYyNiGtAFvpeTp1IRGC+7rag69ID2XinBAHDMSBLJYZUnokwGuwIRvnuC/XVUy/IASxC8Z6KVBMEPkskdyMVzD/T0sELGrXq9wnqQTL26rH2nh/fk0dbOmQRsZRxo/GRMWu5EX5gD2TgBs9Ix3kUu7xlA22sjkYbZVOgvuZ/t8SPB9KcWKqYkuZJifkJFJakfrB73T0tzFLWqB7ZvMOrvXB2HWJG9vTAU62ruoAGBFTIXi67yIV2XxQKXeQtVcB6Y3fvj+VMqNhL1mfSBYfbPnJjElXxoWOMlqYH9gWT51JieaovegDfxnBKoFeClpJOUc00v2R6gVqr6+gXBOHb9at4rg0bq0UsGxfIFcocpxoIGtCCWSij2eE53TusPPW+HFtmCoxdt2tJqgrF1rEm/sBwiHp3CZnb55CmbYEKXM+SrvpDNzJys9YmwTn9FE27VLkefWhH0Hq6brVc94/igFU80LQBrzNfCUvlXMQX61nAEyxcYRvjWp36W+oMX6SM0e9VKhJ6k1Jp8U8RuJBNhJWi7xcoV9BFdkMwAu/HFppXDsK5Suc50ibSljyRzDwQ== ronald.moetwil@gmail.com"
+  },
+  "autoShutdownStatus": {
+      "value": "Enabled"
+  },
+  "autoShutdownTime": {
+      "value": "19:00"
+  },
+  "autoShutdownTimeZone": {
+      "value": "W. Europe Standard Time"
+  },
+  "autoShutdownNotificationStatus": {
+      "value": "Enabled"
+  },
+  "autoShutdownNotificationLocale": {
+      "value": "en"
+  },
+  "autoShutdownNotificationEmail": {
+      "value": "ronald.moetwil@gmail.com"
+  }
+}
