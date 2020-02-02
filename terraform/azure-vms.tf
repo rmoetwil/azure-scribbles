@@ -8,6 +8,7 @@ locals {
   username     = "ronald"
 }
 
+data "azurerm_client_config" "current" {}
 
 # Create a resource group
 resource "azurerm_resource_group" "exam-prep-rg" {
@@ -107,6 +108,32 @@ resource "azurerm_virtual_machine" "exam-prep-vm" {
   }
 }
 
+resource "azurerm_key_vault" "exam-prep-kv" {
+  name                        = format("%s-kv", local.project_name)
+  resource_group_name         = azurerm_resource_group.exam-prep-rg.name
+  location                    = azurerm_resource_group.exam-prep-rg.location
+  enabled_for_disk_encryption = true
+  tenant_id                   = data.azurerm_client_config.current.tenant_id
+
+  sku_name = "standard"
+
+    access_policy {
+    tenant_id = data.azurerm_client_config.current.tenant_id
+    object_id = data.azurerm_client_config.current.object_id
+
+    key_permissions = [
+      "get", "create", "list", "delete"
+    ]
+
+    secret_permissions = [
+      "get", "set", "list", "delete"
+    ]
+
+    storage_permissions = [
+      "get", "set", "list", "delete"
+    ]
+  }
+}
 
 #
 # TODO Do not see a way yet to connect this kind of schedule to a regular vm.
