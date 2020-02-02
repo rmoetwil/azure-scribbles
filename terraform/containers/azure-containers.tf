@@ -15,10 +15,3 @@ resource "azurerm_resource_group" "exam-prep-rg" {
   location = local.location
 }
 
-resource "azurerm_container_registry" "acr" {
-  name                = "examprep"
-  resource_group_name = azurerm_resource_group.exam-prep-rg.name
-  location            = azurerm_resource_group.exam-prep-rg.location
-  sku                 = "Standard"
-  admin_enabled       = false
-}
