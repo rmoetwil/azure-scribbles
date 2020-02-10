@@ -14,6 +14,11 @@ data "azurerm_container_registry" "acr" {
   resource_group_name = "exam-prep-gen-rg"
 }
 
+data "azurerm_storage_account" "exam-prep-gen-sa" {
+  name                = "examprepgensa"
+  resource_group_name = "exam-prep-gen-rg"
+}
+
 resource "azurerm_resource_group" "exam-prep-webapp-rg" {
   name     = format("%s-rg", local.project_name)
   location = local.location
@@ -44,6 +49,7 @@ resource "azurerm_app_service" "exam-prep-webapp-docker-app" {
   }
 
   app_settings = {
+    "WEBSITES_PORT" = "7474"
     "WEBSITES_ENABLE_APP_SERVICE_STORAGE" = "false"
     "DOCKER_REGISTRY_SERVER_URL"          = "https://${data.azurerm_container_registry.acr.login_server}"
     "DOCKER_REGISTRY_SERVER_USERNAME"     = data.azurerm_container_registry.acr.admin_username
