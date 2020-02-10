@@ -49,3 +49,12 @@ resource "azurerm_key_vault" "exam-prep-gen-kv" {
     ]
   }
 }
+
+resource "azurerm_storage_account" "exam-prep-gen-sa" {
+  name                     = "examprepgensa"
+  resource_group_name      = azurerm_resource_group.exam-prep-gen-rg.name
+  location                 = azurerm_resource_group.exam-prep-gen-rg.location
+  account_tier             = "Standard"
+  account_kind             = "StorageV2"
+  account_replication_type = "LRS"
+}
