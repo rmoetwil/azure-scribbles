@@ -2,6 +2,14 @@ provider "azurerm" {
   version = "=1.42.0"
 }
 
+provider "azuread" {
+  version = "=0.7.0"
+}
+
+variable "service_principal_pwd" {
+  type = string
+}
+
 locals {
   project_name = "exam-prep-gen"
   location     = "West Europe"
@@ -57,4 +65,22 @@ resource "azurerm_storage_account" "exam-prep-gen-sa" {
   account_tier             = "Standard"
   account_kind             = "StorageV2"
   account_replication_type = "LRS"
+}
+
+resource "azuread_application" "application" {
+  name                       = "exam-prep-app"
+}
+
+resource "azuread_service_principal" "exam-spn" {
+  application_id = azuread_application.application.application_id
+}
+
+resource "azuread_service_principal_password" "exam-spn-pwd" {
+  service_principal_id = azuread_service_principal.exam-spn.id
+  value                = var.service_principal_pwd
+  end_date             = "2022-01-01T01:02:03Z"
+}
+
+output "service_principal_client_id" {
+  value = azuread_service_principal.exam-spn.application_id
 }
