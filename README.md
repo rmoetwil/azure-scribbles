@@ -8,3 +8,4 @@ Terraform is not part of the Azure certifications but I like to be able to provi
 - Azure CLI
 - Azure ARM
 - Terraform
+
