@@ -9,6 +9,8 @@ fi
 RESOURCE_GROUP=network-watcher-rg
 LOCATION=westeurope
 PASSWORD=$1
+STORAGE_ACCOUNT=networkwatcher2020sa
+LOG_ANALYTICS_WORKSPACE=network-watcher-law
 
 # Create the resource group to contain all resources
 az group create --name $RESOURCE_GROUP --location $LOCATION
@@ -94,3 +96,28 @@ az network watcher configure \
 --locations $LOCATION \
 --enabled true \
 --resource-group $RESOURCE_GROUP
+
+# Create storage account to capture logs
+az storage account create \
+    --resource-group $RESOURCE_GROUP \
+    --name $STORAGE_ACCOUNT \
+    --location $LOCATION \
+    --sku Standard_LRS
+
+# Create Log Analytics Workspace to capture the logs also
+az monitor log-analytics workspace create \
+    --resource-group $RESOURCE_GROUP \
+    --workspace-name $LOG_ANALYTICS_WORKSPACE \
+    --location $LOCATION
+
+# Create NSG Flow Log configuration
+az network watcher flow-log create \
+   --location $LOCATION \
+   --name MyNsgFlowLog \
+   --nsg MyNsg \
+   --enabled true \
+   --interval 10 \
+   --resource-group $RESOURCE_GROUP \
+   --storage-account $STORAGE_ACCOUNT \
+   --traffic-analytics true \
+   --workspace $LOG_ANALYTICS_WORKSPACE
