@@ -1,5 +1,14 @@
+terraform {
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "=3.75.0"
+    }
+  }
+}
+
 provider "azurerm" {
-  version = "=1.42.0"
+  features {}
 }
 
 locals {
@@ -26,7 +35,7 @@ resource "azurerm_virtual_network" "exam-prep-vnet" {
 resource "azurerm_subnet" "exam-prep-sbn" {
   name                 = "default"
   resource_group_name  = azurerm_resource_group.exam-prep-rg.name
-  address_prefix       = "10.0.0.0/24"
+  address_prefixes     = ["10.0.0.0/24"]
   virtual_network_name = azurerm_virtual_network.exam-prep-vnet.name
 }
 
@@ -135,15 +144,15 @@ resource "azurerm_key_vault" "exam-prep-kv" {
     object_id = data.azurerm_client_config.current.object_id
 
     key_permissions = [
-      "get", "create", "list", "delete"
+      "Get", "Create", "List", "Delete"
     ]
 
     secret_permissions = [
-      "get", "set", "list", "delete"
+      "Get", "Set", "List", "Delete"
     ]
 
     storage_permissions = [
-      "get", "set", "list", "delete"
+      "Get", "Set", "List", "Delete"
     ]
   }
 }

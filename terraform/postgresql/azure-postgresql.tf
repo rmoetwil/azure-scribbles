@@ -2,7 +2,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "=2.70.0"
+      version = "=3.75.0"
     }
   }
 }
@@ -12,22 +12,22 @@ provider "azurerm" {
 }
 
 locals {
-  project_name = "exam-prep-gen"
+  project_name = "exam-prep-db"
   location     = "West Europe"
 }
 
 data "azurerm_client_config" "current" {}
 
 # Create a resource group
-resource "azurerm_resource_group" "exam-prep-gen-rg" {
+resource "azurerm_resource_group" "exam-prep-db-rg" {
   name     = format("%s-rg", local.project_name)
   location = local.location
 }
 
-resource "azurerm_postgresql_server" "exam-prep-gen-db" {
+resource "azurerm_postgresql_server" "exam-prep-db" {
   name                = format("%s-db", local.project_name)
-  resource_group_name = azurerm_resource_group.exam-prep-gen-rg.name
-  location            = azurerm_resource_group.exam-prep-gen-rg.location
+  resource_group_name = azurerm_resource_group.exam-prep-db-rg.name
+  location            = azurerm_resource_group.exam-prep-db-rg.location
 
   administrator_login          = "ronaldo"
   administrator_login_password = "ohsosecret-3"

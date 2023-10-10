@@ -2,18 +2,17 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "=2.46.0"
+      version = "=3.75.0"
     }
   }
 }
 
-# Configure the Microsoft Azure Provider
 provider "azurerm" {
   features {}
 }
 
 locals {
-  project_name = "exam-prep-webapp"
+  project_name = "exam-prep-apim"
   location     = "West Europe"
 }
 
@@ -33,26 +32,24 @@ resource "azurerm_storage_account" "exam-prep-apim-sa" {
   account_replication_type = "LRS"
 }
 
-resource "azurerm_app_service_plan" "exam-prep-apim-sp" {
-  name                = "exam-prep-webapp-sp"
+resource "azurerm_service_plan" "exam-prep-apim-sp" {
+  name                = "exam-prep-apim-sp"
   resource_group_name = azurerm_resource_group.exam-prep-apim-rg.name
   location            = azurerm_resource_group.exam-prep-apim-rg.location
-  kind                = "Linux"
-  reserved            = true
-
-  sku {
-    tier = "Standard"
-    size = "S1"
-  }
+  os_type             = "Linux"
+  sku_name            = "S1"
 }
 
-resource "azurerm_function_app" "exam-prep-apim-fa" {
+
+resource "azurerm_linux_function_app" "exam-prep-apim-fa" {
   name                       = "exam-prep-apim-fa"
   resource_group_name        = azurerm_resource_group.exam-prep-apim-rg.name
   location                   = azurerm_resource_group.exam-prep-apim-rg.location
-  app_service_plan_id        = azurerm_app_service_plan.exam-prep-apim-sp.id
+  service_plan_id            = azurerm_service_plan.exam-prep-apim-sp.id
   storage_account_name       = azurerm_storage_account.exam-prep-apim-sa.name
   storage_account_access_key = azurerm_storage_account.exam-prep-apim-sa.primary_access_key
+
+  site_config {}
 }
 
 resource "azurerm_api_management" "exam-prep-apim-am" {
@@ -63,5 +60,4 @@ resource "azurerm_api_management" "exam-prep-apim-am" {
   publisher_email     = "ronald.moetwil@gmail.com"
 
   sku_name = "Developer_1"
-
 }

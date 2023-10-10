@@ -1,5 +1,14 @@
+terraform {
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "=3.75.0"
+    }
+  }
+}
+
 provider "azurerm" {
-  version = "=1.42.0"
+  features {}
 }
 
 locals {
@@ -24,7 +33,7 @@ resource "azurerm_container_group" "exam-prep-cont-grp" {
   name                = "exam-prep-cont-grp"
   resource_group_name = azurerm_resource_group.exam-prep-rg.name
   location            = azurerm_resource_group.exam-prep-rg.location
-  ip_address_type     = "public"
+  ip_address_type     = "Public"
   os_type             = "Linux"
 
   image_registry_credential {
@@ -35,7 +44,7 @@ resource "azurerm_container_group" "exam-prep-cont-grp" {
 
   container {
     name   = "neo4j"
-    image  = "examprep.azurecr.io/neo4j:4.0.0"
+    image  = "examprep.azurecr.io/neo4j:5.12.0"
     cpu    = "1"
     memory = "1"
 

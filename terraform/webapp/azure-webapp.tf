@@ -1,5 +1,14 @@
+terraform {
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "=3.75.0"
+    }
+  }
+}
+
 provider "azurerm" {
-  version = "=1.42.0"
+  features {}
 }
 
 locals {
@@ -24,28 +33,25 @@ resource "azurerm_resource_group" "exam-prep-webapp-rg" {
   location = local.location
 }
 
-resource "azurerm_app_service_plan" "exam-prep-webapp-sp" {
+resource "azurerm_service_plan" "exam-prep-webapp-sp" {
   name                = "exam-prep-webapp-sp"
   resource_group_name = azurerm_resource_group.exam-prep-webapp-rg.name
   location            = azurerm_resource_group.exam-prep-webapp-rg.location
-  kind                = "Linux"
-  reserved            = true
-
-  sku {
-    tier = "Standard"
-    size = "S1"
-  }
+  os_type             = "Linux"
+  sku_name            = "S1"
 }
 
-resource "azurerm_app_service" "exam-prep-webapp-docker-app" {
+resource "azurerm_linux_web_app" "exam-prep-webapp-docker-app" {
   name                = "exam-prep-webapp-docker-app"
   resource_group_name = azurerm_resource_group.exam-prep-webapp-rg.name
   location            = azurerm_resource_group.exam-prep-webapp-rg.location
-  app_service_plan_id = azurerm_app_service_plan.exam-prep-webapp-sp.id
+  service_plan_id     = azurerm_service_plan.exam-prep-webapp-sp.id
 
   site_config {
     always_on        = true
-    linux_fx_version = "DOCKER|${data.azurerm_container_registry.acr.login_server}/neo4j:4.0.0"
+    application_stack {
+      docker_image_name = "${data.azurerm_container_registry.acr.login_server}/neo4j:5.12.0"
+    }
   }
 
   app_settings = {
