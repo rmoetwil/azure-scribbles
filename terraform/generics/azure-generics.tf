@@ -1,13 +1,18 @@
+terraform {
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "=3.75.0"
+    }
+    azuread = {
+      source  = "hashicorp/azuread"
+      version = "~> 2.43.0"
+    }
+  }
+}
+
 provider "azurerm" {
-  version = "=1.42.0"
-}
-
-provider "azuread" {
-  version = "=0.7.0"
-}
-
-variable "service_principal_pwd" {
-  type = string
+  features {}
 }
 
 locals {
@@ -45,15 +50,15 @@ resource "azurerm_key_vault" "exam-prep-gen-kv" {
     object_id = data.azurerm_client_config.current.object_id
 
     key_permissions = [
-      "get", "create", "list", "delete"
+      "Get", "Create", "List", "Delete"
     ]
 
     secret_permissions = [
-      "get", "set", "list", "delete"
+      "Get", "Set", "List", "Delete"
     ]
 
     storage_permissions = [
-      "get", "set", "list", "delete"
+      "Get", "Set", "List", "Delete"
     ]
   }
 }
@@ -68,7 +73,7 @@ resource "azurerm_storage_account" "exam-prep-gen-sa" {
 }
 
 resource "azuread_application" "application" {
-  name                       = "exam-prep-app"
+  display_name             = "exam-prep-app"
 }
 
 resource "azuread_service_principal" "exam-spn" {
@@ -77,10 +82,14 @@ resource "azuread_service_principal" "exam-spn" {
 
 resource "azuread_service_principal_password" "exam-spn-pwd" {
   service_principal_id = azuread_service_principal.exam-spn.id
-  value                = var.service_principal_pwd
-  end_date             = "2022-01-01T01:02:03Z"
+  end_date             = "2024-01-01T01:02:03Z"
 }
 
 output "service_principal_client_id" {
   value = azuread_service_principal.exam-spn.application_id
+}
+
+output "service_principal_password" {
+  value = azuread_service_principal_password.exam-spn-pwd.value
+  sensitive = true
 }
